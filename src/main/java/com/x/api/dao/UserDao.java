@@ -7,4 +7,6 @@ import com.x.api.model.User;
 public interface UserDao extends CrudRepository<User, Long>{
 
 	User findByName(String name);
+
+    User findByEmail(String email);
 }

@@ -1,10 +1,15 @@
 package com.x.api.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.x.api.dao.AddressDao;
+import com.x.api.dto.UserDto;
 import com.x.api.model.Address;
+import com.x.api.model.UserRole;
 import com.x.api.model.request.UserAddressAddRequest;
 import com.x.api.model.request.UserCreateRequest;
 import com.x.api.response.AddressResponse;
@@ -12,11 +17,14 @@ import com.x.api.response.UserResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.x.api.dao.UserDao;
 import com.x.api.model.User;
+
+import javax.validation.Valid;
 
 @Service
 public class UserService {
@@ -26,11 +34,18 @@ public class UserService {
 	UserDao userDao;
 	@Autowired
     AddressDao addressDao;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 	Gson gson = new Gson();
 
 	public User getUser(long id){
-        return userDao.findOne(id);
+	    Optional<User> optional = userDao.findById(id);
+	    User user = null;
+	    if(optional.isPresent()){
+            user = optional.get();
+        }
+        return user;
     }
 
 	public String getAllUserList() {
@@ -69,5 +84,21 @@ public class UserService {
             addressResponses.add(response);
         }
         return gson.toJson(addressResponses);
+    }
+
+    public User getUserByEmail(String email) {
+        User user = userDao.findByEmail(email);
+        return user;
+    }
+
+    public void register(UserDto userDto) {
+	    User user = new User();
+	    user.setName(userDto.getFirstName());
+	    user.setEmail(userDto.getEmail());
+	    user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+	    user.setRole(gson.toJson(Arrays.asList(UserRole.USER_ROLE.name())));
+        user.setActive(Boolean.TRUE);
+
+	    userDao.save(user);
     }
 }

@@ -1,6 +1,7 @@
 package com.x.api.model;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity(name="user")
@@ -16,6 +17,10 @@ public class User extends BaseEntity{
     String referralCode;
     @Column(name = "rating")
     Integer rating;
+    @Column(name = "password")
+    private String password;
+    @Column(name = "role")
+    private String role;
 
     @OneToMany(targetEntity=Address.class, mappedBy="user",
             fetch= FetchType.EAGER, cascade = CascadeType.ALL)
@@ -39,6 +44,22 @@ public class User extends BaseEntity{
         this.name = name;
         this.email = email;
         this.phone = phone;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getName() {
