@@ -1,6 +1,8 @@
 package com.x.api.service;
 
 import com.x.api.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,6 +17,7 @@ import java.util.List;
 
 @Service
 public class UserDetailsServiceImp implements UserDetailsService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserDetailsServiceImp.class);
 
     @Autowired
     UserService userService;
@@ -27,15 +30,16 @@ public class UserDetailsServiceImp implements UserDetailsService {
             throw new UsernameNotFoundException(
                     "No user found with username: "+ email);
         }
+        LOGGER.info("Verifying Password:"+user.getPassword());
         boolean enabled = true;
         boolean accountNonExpired = true;
         boolean credentialsNonExpired = true;
         boolean accountNonLocked = true;
         return  new org.springframework.security.core.userdetails.User
                 (user.getEmail(),
-                        user.getPassword().toLowerCase(), enabled, accountNonExpired,
-                        credentialsNonExpired, accountNonLocked,
-                        getAuthorities(Arrays.asList(user.getRole())));
+                user.getPassword().toLowerCase(), enabled, accountNonExpired,
+                credentialsNonExpired, accountNonLocked,
+                getAuthorities(Arrays.asList(user.getRole())));
     }
 
     private static List<GrantedAuthority> getAuthorities (List<String> roles) {

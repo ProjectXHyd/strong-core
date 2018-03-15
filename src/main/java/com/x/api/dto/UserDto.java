@@ -1,62 +1,63 @@
 package com.x.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.x.api.validator.email.ValidEmail;
-import com.x.api.validator.password.PasswordMatches;
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-@PasswordMatches
 public class UserDto {
 
     @NotNull
     @NotEmpty
-    private String firstName;
-
-    @NotNull
-    @NotEmpty
-    private String lastName;
-
-    @NotNull
-    @NotEmpty
-    private String password;
-    private String matchingPassword;
-
+    private String name;
+    
     @NotNull
     @NotEmpty
     @ValidEmail
     private String email;
 
-    public String getFirstName() {
-        return firstName;
-    }
+    @NotNull
+    @NotEmpty
+    private String phone;
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+    @NotNull
+    @NotEmpty
+    private String password;
 
-    public String getLastName() {
-        return lastName;
+    @JsonCreator
+    public UserDto(@JsonProperty("name") @NotNull @NotEmpty String name,
+                   @JsonProperty("phone") @NotNull @NotEmpty String phone,
+                   @JsonProperty("email") @NotNull @NotEmpty String email,
+                   @JsonProperty("password") @NotNull @NotEmpty String password) {
+        this.name = name;
+        this.phone = phone;
+        this.password = password;
+        this.email = email;
     }
+    
+    public String getName() {
+		return name;
+	}
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String getPassword() {
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getMatchingPassword() {
-        return matchingPassword;
-    }
-
-    public void setMatchingPassword(String matchingPassword) {
-        this.matchingPassword = matchingPassword;
     }
 
     public String getEmail() {
@@ -65,5 +66,15 @@ public class UserDto {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "UserDto{" +
+                "Name='" + name + '\'' +
+                ", phone='" + phone + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

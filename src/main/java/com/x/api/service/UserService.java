@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.x.api.dao.AddressDao;
 import com.x.api.dto.UserDto;
 import com.x.api.model.Address;
@@ -23,8 +21,6 @@ import org.springframework.stereotype.Service;
 import com.google.gson.Gson;
 import com.x.api.dao.UserDao;
 import com.x.api.model.User;
-
-import javax.validation.Valid;
 
 @Service
 public class UserService {
@@ -93,7 +89,8 @@ public class UserService {
 
     public void register(UserDto userDto) {
 	    User user = new User();
-	    user.setName(userDto.getFirstName());
+	    user.setName(userDto.getName());
+	    user.setPhone(userDto.getPhone());
 	    user.setEmail(userDto.getEmail());
 	    user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 	    user.setRole(gson.toJson(Arrays.asList(UserRole.USER_ROLE.name())));
