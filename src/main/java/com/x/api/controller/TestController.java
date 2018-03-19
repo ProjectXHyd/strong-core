@@ -8,13 +8,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Controller
-@RequestMapping(value = "/test")
 public class TestController {
 
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value = "/test",method = RequestMethod.GET)
 	@ResponseStatus(code = HttpStatus.OK)
 	@ResponseBody
 	public String isRunning() {
 		return "Application is running";
 	}
+
+    @RequestMapping(value = "/home",method = RequestMethod.GET)
+    @ResponseStatus(code = HttpStatus.OK)
+    @ResponseBody
+    public String home() {
+        return "Welcome!";
+    }
 }

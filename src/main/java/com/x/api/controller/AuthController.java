@@ -28,7 +28,7 @@ public class AuthController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseStatus(code = HttpStatus.CREATED)
-    public void registerUser(@RequestBody(required = true) UserDto userDto) {
+    public void registerUser(@RequestBody(required = true) @Valid UserDto userDto) {
         LOGGER.info("Received registration request:"+userDto);
         try{
             authService.registerUser(userDto);

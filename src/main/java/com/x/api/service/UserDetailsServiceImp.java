@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,6 +22,8 @@ public class UserDetailsServiceImp implements UserDetailsService {
 
     @Autowired
     UserService userService;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -37,8 +40,11 @@ public class UserDetailsServiceImp implements UserDetailsService {
         boolean accountNonLocked = true;
         return  new org.springframework.security.core.userdetails.User
                 (user.getEmail(),
-                user.getPassword().toLowerCase(), enabled, accountNonExpired,
-                credentialsNonExpired, accountNonLocked,
+                user.getPassword(),
+                enabled,
+                accountNonExpired,
+                credentialsNonExpired,
+                accountNonLocked,
                 getAuthorities(Arrays.asList(user.getRole())));
     }
 

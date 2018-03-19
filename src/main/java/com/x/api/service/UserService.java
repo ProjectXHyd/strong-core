@@ -31,7 +31,7 @@ public class UserService {
 	@Autowired
     AddressDao addressDao;
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    PasswordEncoder passwordEncoder;
 
 	Gson gson = new Gson();
 
@@ -93,7 +93,7 @@ public class UserService {
 	    user.setPhone(userDto.getPhone());
 	    user.setEmail(userDto.getEmail());
 	    user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-	    user.setRole(gson.toJson(Arrays.asList(UserRole.USER_ROLE.name())));
+	    user.setRole(gson.toJson(Arrays.asList(UserRole.USER.name())));
         user.setActive(Boolean.TRUE);
 
 	    userDao.save(user);
